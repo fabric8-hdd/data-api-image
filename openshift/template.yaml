@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: hdd-data-api
+metadata:
+  name: hdd-data-api
+  annotations:
+    description: hdd-supervisor-data-api
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: hdd-supervisor
+    name: hdd-data-api
+    namespace: hdd-supervisor
+  spec:
+    ports:
+      - name: hdd-data-api-tcp
+        port: ${{HDD_DATA_API_PORT}}
+        protocol: TCP
+        targetPort: ${{HDD_DATA_API_PORT}}
+    selector:
+      deploymentconfig: hdd-data-api
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      service: hdd-data-api
+      app: hdd-supervisor
+    name: hdd-data-api
+    namespace: hdd-supervisor
+  spec:
+    replicas: 1
+    selector:
+      service: hdd-data-api
+    template:
+      metadata:
+        labels:
+          app: hdd-supervisor
+          service: hdd-data-api
+      spec:
+        containers:
+          - image: >-
+              registry.devshift.net/fabric8-hdd/openshift-hdd-data-api:${IMAGE_TAG}
+            imagePullPolicy: Always
+            name: hdd-data-api
+            env:
+            - name: HDD_DATA_API_PORT
+              value: ${HDD_DATA_API_PORT}
+            ports:
+            - containerPort: ${{HDD_DATA_API_PORT}}
+              protocol: TCP
+            readinessProbe:
+              httpGet:
+                path: /api/v1.0/readiness
+                port: ${{HDD_DATA_API_PORT}}
+                scheme: HTTP
+              initialDelaySeconds: 30
+              periodSeconds: 60
+              timeoutSeconds: 10
+            livenessProbe:
+              httpGet:
+                path: /api/v1.0/liveness
+                port: ${{HDD_DATA_API_PORT}}
+                scheme: HTTP
+              initialDelaySeconds: 30
+              periodSeconds: 60
+              timeoutSeconds: 10
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "500m"
+              limits:
+                memory: "1024Mi"
+                cpu: "1000m"
+            securityContext:
+              privileged: false
+        dnsPolicy: ClusterFirst
+    triggers:
+      - type: ConfigChange
+
+parameters:
+- name: HDD_DATA_API_PORT
+  description: Port number that data-api service will be exposed on.
+  required: true
+  value: "9090"
+- name: HDD_DATA_API_HOSTNAME
+  description: Parameterised hostname route for the data-api service.
+  required: false
+- description: Image tag
+  displayName: Image tag
+  required: true
+  name: IMAGE_TAG
+  value: "latest"

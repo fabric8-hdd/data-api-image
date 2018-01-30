@@ -1,59 +1,47 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: hdd-data-api
+  template: osio-hdd-data-api
 metadata:
-  name: hdd-data-api
+  name: osio-hdd-data-api
   annotations:
-    description: hdd-supervisor-data-api
+    description: ${APP_NAME}
 objects:
-- apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app: hdd-supervisor
-    name: hdd-data-api
-    namespace: hdd-supervisor
-  spec:
-    ports:
-      - name: hdd-data-api-tcp
-        port: ${{HDD_DATA_API_PORT}}
-        protocol: TCP
-        targetPort: ${{HDD_DATA_API_PORT}}
-    selector:
-      deploymentconfig: hdd-data-api
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      service: hdd-data-api
-      app: hdd-supervisor
-    name: hdd-data-api
-    namespace: hdd-supervisor
+      app: ${APP_NAME}
+    name: ${APP_NAME}
   spec:
     replicas: 1
     selector:
-      service: hdd-data-api
+      app: ${APP_NAME}
+      deploymentconfig: ${APP_NAME}
     template:
       metadata:
         labels:
-          app: hdd-supervisor
-          service: hdd-data-api
+          app: ${APP_NAME}
+          deploymentconfig: ${APP_NAME}
       spec:
         containers:
           - image: >-
-              registry.devshift.net/fabric8-hdd/openshift-hdd-data-api:${IMAGE_TAG}
+              registry.devshift.net/fabric8-hdd/${IMAGE_NAME}:${IMAGE_TAG}
             imagePullPolicy: Always
-            name: hdd-data-api
+            name: ${APP_NAME}
             env:
             - name: HDD_DATA_API_PORT
               value: ${HDD_DATA_API_PORT}
+            - name: ROUTE_PATH
+              value: ${ROUTE_PATH}
+            - name: ROUTE_PREFIX
+              value: ${ROUTE_PREFIX}
             ports:
             - containerPort: ${{HDD_DATA_API_PORT}}
               protocol: TCP
             readinessProbe:
               httpGet:
-                path: /api/v1.0/readiness
+                path: /data/api/v1.0/readiness
                 port: ${{HDD_DATA_API_PORT}}
                 scheme: HTTP
               initialDelaySeconds: 30
@@ -61,7 +49,7 @@ objects:
               timeoutSeconds: 10
             livenessProbe:
               httpGet:
-                path: /api/v1.0/liveness
+                path: /data/api/v1.0/liveness
                 port: ${{HDD_DATA_API_PORT}}
                 scheme: HTTP
               initialDelaySeconds: 30
@@ -76,15 +64,46 @@ objects:
                 cpu: "1000m"
             securityContext:
               privileged: false
-        dnsPolicy: ClusterFirst
-    triggers:
-      - type: ConfigChange
+      triggers:
+        - type: ConfigChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    ports:
+      - name: ${APP_NAME}
+        port: ${{HDD_DATA_API_PORT}}
+        protocol: TCP
+        targetPort: ${{HDD_DATA_API_PORT}}
+    selector:
+      deploymentconfig: ${APP_NAME}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APP_NAME}
+      template: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    path: /data
+    port:
+      targetPort: ${APP_NAME}
+    to:
+      kind: Service
+      name: ${APP_NAME}
 
 parameters:
 - name: HDD_DATA_API_PORT
   description: Port number that data-api service will be exposed on.
   required: true
-  value: "9090"
+  value: "8889"
+- name: HDD_DATA_SERVICE_TARGET_PORT
+  description: Port number that data-api service will map to.
+  required: true
+  value: "8889"
 - name: HDD_DATA_API_HOSTNAME
   description: Parameterised hostname route for the data-api service.
   required: false
@@ -93,3 +112,23 @@ parameters:
   required: true
   name: IMAGE_TAG
   value: "latest"
+- description: Name of the app
+  displayName: Name of the app
+  required: true
+  name: APP_NAME
+  value: "osio-hdd-data-api"
+- description: Image name
+  displayName: Image name
+  required: true
+  name: IMAGE_NAME
+  value: "openshift-hdd-data-api"
+- description: Route path
+  displayName: Route path
+  required: true
+  name: ROUTE_PATH
+  value: "/data"
+- description: Route prefix
+  displayName: Route prefix
+  required: true
+  name: ROUTE_PREFIX
+  value: "/api/v1.0"

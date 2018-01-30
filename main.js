@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: true }))
 var port = process.env.APP_PORT || 9090,
 	ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0"
 
-var routes = require("./node_modules/data-api/src/api/routes")(app)
+var routes = require("./node_modules/data-api/src/api/routes")(app, process.env.ROUTE_PATH + process.env.ROUTE_PREFIX)
 
 //Setting up server
 var server = app.listen(port, function () {

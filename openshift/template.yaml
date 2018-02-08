@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: osio-hdd-data-api
+  template: osio-hypothesis-data-api
 metadata:
-  name: osio-hdd-data-api
+  name: osio-hypothesis-data-api
   annotations:
     description: ${APP_NAME}
 objects:
@@ -116,12 +116,12 @@ parameters:
   displayName: Name of the app
   required: true
   name: APP_NAME
-  value: "osio-hdd-data-api"
+  value: "osio-hypothesis-data-api"
 - description: Image name
   displayName: Image name
   required: true
   name: IMAGE_NAME
-  value: "openshift-hdd-data-api"
+  value: "openshift-hypothesis-data-api"
 - description: Route path
   displayName: Route path
   required: true

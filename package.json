@@ -1,12 +1,12 @@
 {
-  "name": "data-api-image",
+  "name": "fabric8-hypothesis-data-api-image",
   "version": "0.0.1",
   "description": "Instantiation of data-api along with its respective build and deploy scripts reside here",
   "dependencies": {
     "express": "^4.16.2",
     "validator": "^9.2.0",
-    "hypothesis-core-image": "github:fabric8-hdd/hypothesis-core-image",
-    "data-api": "github:fabric8-hdd/data-api"
+    "hypothesis-core-image": "github:fabric8-hdd/fabric8-hypothesis-core-image",
+    "data-api": "github:fabric8-hdd/fabric8-hypothesis-data-api"
   },
   "scripts": {
     "start": "node main.js",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mik-dass/data-api-image.git"
+    "url": "git+https://github.com/fabric8-hdd/fabric8-hypothesis-data-api-image.git"
   },
   "author": "Anmol Babu",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mik-dass/data-api-image/issues"
+    "url": "https://github.com/fabric8-hdd/fabric8-hypothesis-data-api-image/issues"
   },
-  "homepage": "https://github.com/mik-dass/data-api-image#readme",
+  "homepage": "https://github.com/fabric8-hdd/fabric8-hypothesis-data-api-image#readme",
   "devDependencies": {
     "eslint": "^4.12.1",
     "chai": "^3.5.0",

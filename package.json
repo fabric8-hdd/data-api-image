@@ -5,8 +5,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "validator": "^9.2.0",
-    "hypothesis-core-image": "github:fabric8-hdd/fabric8-hypothesis-core-image",
-    "data-api": "github:fabric8-hdd/fabric8-hypothesis-data-api"
+    "fabric8-hypothesis-core-image": "github:fabric8-hdd/fabric8-hypothesis-core-image",
+    "fabric8-hypothesis-data-api": "github:fabric8-hdd/fabric8-hypothesis-data-api"
   },
   "scripts": {
     "start": "node main.js",

@@ -121,7 +121,7 @@ parameters:
   displayName: Image name
   required: true
   name: IMAGE_NAME
-  value: "openshift-hypothesis-data-api"
+  value: "osio-hypothesis-data-api"
 - description: Route path
   displayName: Route path
   required: true

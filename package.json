@@ -5,8 +5,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "validator": "^9.2.0",
-    "fabric8-hypothesis-core-image": "github:fabric8-hdd/fabric8-hypothesis-core-image",
-    "fabric8-hypothesis-data-api": "github:fabric8-hdd/fabric8-hypothesis-data-api"
+    "fabric8-hypothesis-core-image": "github:fabric8-hypothesis/fabric8-hypothesis-core-image",
+    "fabric8-hypothesis-data-api": "github:fabric8-hypothesis/fabric8-hypothesis-data-api"
   },
   "scripts": {
     "start": "node main.js",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fabric8-hdd/fabric8-hypothesis-data-api-image.git"
+    "url": "git+https://github.com/fabric8-hypothesis/fabric8-hypothesis-data-api-image.git"
   },
   "author": "Anmol Babu",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fabric8-hdd/fabric8-hypothesis-data-api-image/issues"
+    "url": "https://github.com/fabric8-hypothesis/fabric8-hypothesis-data-api-image/issues"
   },
-  "homepage": "https://github.com/fabric8-hdd/fabric8-hypothesis-data-api-image#readme",
+  "homepage": "https://github.com/fabric8-hypothesis/fabric8-hypothesis-data-api-image#readme",
   "devDependencies": {
     "eslint": "^4.12.1",
     "chai": "^3.5.0",

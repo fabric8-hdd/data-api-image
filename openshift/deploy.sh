@@ -20,7 +20,7 @@ template="${here}/template.yaml"
 envfile="${here}/data-api.env"
 
 
-if [ -z $(grep "HDD_DATA_API_PORT" $envfile | cut -d'=' -f 2) ];
+if [ -z $(grep "HYPOTHESIS_DATA_API_PORT" $envfile | cut -d'=' -f 2) ];
 then
   echo "PORT parameter will be default"
   oc_process_apply "$template"
